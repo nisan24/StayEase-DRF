@@ -8,10 +8,14 @@ import uuid, time
 from payments.models import Payment_Model
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from django.conf import settings
+from django.http import HttpResponseRedirect
 
 
 class Payment_View(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     def post(self, request):
         booking_id = request.data.get('booking_id')
         
@@ -128,18 +132,21 @@ class PaymentSuccess_View(APIView):
             booking.is_confirmed = True
             booking.payment_reference = tran_id
             booking.save()
+            
+            
+            return HttpResponseRedirect("http://127.0.0.1:5500/booking-history.html")
 
-            return Response(
-                {
-                    'message': 'Payment successful!',
-                    'tran_id': tran_id,
-                    'booking_id': booking.id,
-                    'hotel_name': booking.hotel.name,
-                    'room_type': booking.room.room_type if booking.room else None,
-                    'total_price': booking.total_price
-                },
-                status= status.HTTP_200_OK
-            )
+            # return Response(
+            #     {
+            #         'message': 'Payment successful!',
+            #         'tran_id': tran_id,
+            #         'booking_id': booking.id,
+            #         'hotel_name': booking.hotel.name,
+            #         'room_type': booking.room.room_type if booking.room else None,
+            #         'total_price': booking.total_price
+            #     },
+            #     status= status.HTTP_200_OK
+            # )
         except Payment_Model.DoesNotExist:
             return Response({'message': 'Invalid transaction ID!'}, status= status.HTTP_400_BAD_REQUEST)
 
@@ -158,7 +165,9 @@ class PaymentFail_View(APIView):
             payment.payment_status = 'Failed'
             payment.save()
 
-            return Response({'message': 'Payment failed!', 'transaction_id': tran_id}, status= status.HTTP_200_OK)
+            return HttpResponseRedirect("http://127.0.0.1:5500/index.html")
+
+            # return Response({'message': 'Payment failed!', 'transaction_id': tran_id}, status= status.HTTP_200_OK)
 
         except Payment_Model.DoesNotExist:
             return Response({'message': 'Invalid transaction ID!'}, status= status.HTTP_400_BAD_REQUEST)
@@ -178,12 +187,11 @@ class PaymentCancel_View(APIView):
             payment.payment_status = 'Cancelled'
             payment.save()
 
-            return Response({'message': 'Payment cancelled!', 'transaction_id': tran_id}, status= status.HTTP_200_OK)
+            return HttpResponseRedirect("http://127.0.0.1:5500/index.html")
+            # return Response({'message': 'Payment cancelled!', 'transaction_id': tran_id}, status= status.HTTP_200_OK)
 
         except Payment_Model.DoesNotExist:
             return Response({'message': 'Invalid transaction ID!'}, status= status.HTTP_400_BAD_REQUEST)
-
-
 
 
 # ====
@@ -194,16 +202,14 @@ class PaymentCancel_View(APIView):
 #     "booking_id": 1
 # }
 
-
 # ===
 
 # booking json:
-
 # {
 #   "hotel": 2,
 #   "room": 1,
-#   "start_date": "2025-01-24",
-#   "end_date": "2025-01-25",
+#   "start_date": "2025-02-24",
+#   "end_date": "2025-02-25",
 #   "guests": 2,
 #   "contact_number": "01639000000",
 #   "email": "nisanhossain24@gmail.com"

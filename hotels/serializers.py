@@ -4,8 +4,6 @@ from reviews.models import Review_Model
 from reviews.serializers import Review_Serializer
 
 
-
-
 class HotelImage_Serializer(serializers.ModelSerializer):
     class Meta:
         model = HotelImage_Model

@@ -10,7 +10,7 @@ class Booking_Serializer(serializers.ModelSerializer):
         model = Booking_Model
         fields = [
             'id', 'user', 'hotel', 'hotel_name', 'room', 'room_type', 'start_date', 'end_date',
-            'guests', 'contact_number', 'email', 'total_price', 'total_nights', 'payment_status',
+            'guests', 'name', 'contact_number', 'email',  'address', 'total_price', 'total_nights', 'payment_status',
             'payment_reference', 'is_confirmed', 'booking_time'
         ]
         read_only_fields = [
@@ -41,8 +41,10 @@ class Booking_Serializer(serializers.ModelSerializer):
 #     "start_date": "2025-02-01",
 #     "end_date": "2025-02-05",
 #     "guests": 2,
+#     "name": "nisan",
 #     "contact_number": "0123456789",
-#     "email": "nisan@gmail.com"
+#     "email": "nisan@gmail.com",
+#     "address": "Sonargaon, Dhaka",
 # }
 
 

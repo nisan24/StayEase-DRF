@@ -11,7 +11,6 @@ RATING_CHOICES = [
     ("⭐⭐⭐⭐⭐", 5),
 ]
 
-
 class Review_Model(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE, related_name="user_reviews")
     hotel = models.ForeignKey(Hotel_Model, on_delete= models.CASCADE, related_name="hotel_reviews", null= True, blank= True)

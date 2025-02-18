@@ -2,19 +2,19 @@ from django.urls import path
 from . views import *
 
 urlpatterns = [
-    # GET hotel reviews
+    # GET
     path('hotel/<int:hotel_id>/', Review_View.as_view(), name='hotel-reviews'),
-    # GET room reviews
+    # GET
     path('room/<int:room_id>/', Review_View.as_view(), name='room-reviews'),
     
-    # POST hotel review
+    # POST
     path('hotel/<int:hotel_id>/add/', Review_View.as_view(), name='add-hotel-review'),
-    # POST room review
+    # POST
     path('room/<int:room_id>/add/', Review_View.as_view(), name='add-room-review'),
     
-    # PUT or DELETE hotel review
+    # PUT or DELETE 
     path('<int:hotel_id>/<int:review_id>/', Review_View.as_view(), name='hotel-review-detail'),
-    # PUT or DELETE room review
+    # PUT or DELETE
     path('<int:room_id>/<int:review_id>/', Review_View.as_view(), name='room-review-detail'),
 ]
 

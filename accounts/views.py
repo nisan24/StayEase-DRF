@@ -13,19 +13,21 @@ from rest_framework.authtoken.models import Token
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserProfile_Serializer
+from .serializers import UserProfile_Serializer, UserRegistration_Serializers
 from rest_framework.authentication import TokenAuthentication
+from .models import UserProfile_Model
+from rest_framework import viewsets, status
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your views here.
 
-
-class UserRegistrationAPIView(APIView):
-   
-    serializer_class = serializers.UserRegistration_Serializers
+class UserRegistrationAPIView(APIView):    
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = UserRegistration_Serializers
     
     def post(self, req):
-        serializer = self.serializer_class(data = req.data)
-        
+        serializer = self.serializer_class(data= req.data)
+
         if serializer.is_valid():
             user = serializer.save()
             print(user)
@@ -34,12 +36,11 @@ class UserRegistrationAPIView(APIView):
             confirm_link = f"http://127.0.0.1:8000/api/accounts/verify/{uid}/{token}/"
             
             email_subject = "Confirm Your Email"
-            email_body = render_to_string('confirm_email.html', {
-                'confirm_link' : confirm_link,
-            })
-            send_mail = EmailMultiAlternatives(email_subject, '', to= [user.email])
-            send_mail.attach_alternative(email_body, "text/html")
-            send_mail.send()
+            email_body = render_to_string('confirm_email.html', {'confirm_link': confirm_link})
+            
+            email = EmailMultiAlternatives(email_subject, '', to=[user.email])
+            email.attach_alternative(email_body, "text/html")
+            email.send()
             return Response({"message" : "Registration successful. Please check your email for verification."})
         
         return Response(serializer.errors)
@@ -59,7 +60,8 @@ def activate(req, uid64, token):
         return redirect('user_login')
         
     else:
-        return redirect('register', {'message': 'Invalid or expired token.'})
+        return redirect('register')
+        # return redirect('register', {'message': 'Invalid or expired token.'})
         
         
         
@@ -104,14 +106,14 @@ class UserLogoutApiView(APIView):
 
 
 
-class UserProfileView(APIView):
+class UserProfile_ViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def get(self, request):
-        user = request.user  
-        
-        serializer = UserProfile_Serializer(user)
-        return Response(serializer.data)
+    queryset = UserProfile_Model.objects.all() 
+    serializer_class = UserProfile_Serializer
     
-    
+    def get_queryset(self):
+        # print(f"User: {self.request.user}") 
+        return UserProfile_Model.objects.filter(user= self.request.user)
+

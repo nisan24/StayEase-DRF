@@ -32,7 +32,7 @@ class Hotel_Model(models.Model):
 
 class HotelImage_Model(models.Model):
     hotel = models.ForeignKey(Hotel_Model , on_delete= models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='hotels/extra_images/', validators=[validate_image])
+    image = models.ImageField(upload_to='hotels/extra_images/', validators= [validate_image])
     time = models.DateTimeField(auto_now_add= True)
 
     def __str__(self):
@@ -68,7 +68,7 @@ class Room_Model(models.Model):
 
 class RoomImage_Model(models.Model):
     room = models.ForeignKey(Room_Model, on_delete= models.CASCADE, related_name='room_images')
-    image = models.ImageField(upload_to='rooms/extra_images/', validators=[validate_image])
+    image = models.ImageField(upload_to='rooms/extra_images/', validators= [validate_image])
     time = models.DateTimeField(auto_now_add= True)
 
 

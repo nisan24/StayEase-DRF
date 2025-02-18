@@ -14,7 +14,6 @@ from django.contrib.postgres.search import TrigramSimilarity
 # Create your views here.
 
 
-
 class Hotel_ViewSet(ModelViewSet):
     queryset = Hotel_Model.objects.all()
     serializer_class = Hotel_Serializer
@@ -37,15 +36,12 @@ class Room_View(ModelViewSet):
     queryset = Room_Model.objects.all()
     serializer_class = Room_Serializer
 
+
 # ==========
 
-        
-        
-# ==========
 class RoomViewSet(ModelViewSet):
     queryset = Room_Model.objects.select_related('hotel').all()
     serializer_class = Room_Serializer
-
 
     def get_queryset(self):
         filters = Q()
@@ -144,11 +140,4 @@ class RoomViewSet(ModelViewSet):
 
         serializer = self.get_serializer(queryset, many= True)
         return Response(serializer.data)
-
-
-
-
-# http://127.0.0.1:8000/api/hotels/rooms/?hotel_id=2&check_in=2025-01-27&check_out=2025-01-29
-
-
 

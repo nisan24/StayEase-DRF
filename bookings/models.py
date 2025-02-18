@@ -8,6 +8,11 @@ PAYMENT_STATUS = [
     ("Pending", "Pending"),
     ("Paid", "Paid")
 ]
+BOOKING_STATUS = [
+    ("Pending", "Pending"),
+    ("Confirmed", "Confirmed"),
+    ("Cancelled", "Cancelled")
+]
 
 class Booking_Model(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE, related_name="bookings")
@@ -16,10 +21,13 @@ class Booking_Model(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     guests = models.PositiveIntegerField(null= True, help_text="Number of guests")
+    name = models.CharField(max_length= 100, blank= True)
     contact_number = models.CharField(max_length= 15, blank= True, null= True)
     email = models.EmailField(blank= True, null= True)
+    address = models.TextField(null= True)
     total_price = models.DecimalField(max_digits= 10, decimal_places= 2, blank= True, null= True)
     total_nights = models.PositiveIntegerField(blank=True, null=True)
+    # booking_status = models.CharField(max_length= 50, choices= BOOKING_STATUS, default='Pending')
     payment_status = models.CharField(max_length= 50, choices= PAYMENT_STATUS, default='Pending')
     payment_reference = models.CharField(max_length= 100, blank= True, null= True, help_text="Payment transaction ID")
     is_confirmed = models.BooleanField(default= False)
@@ -36,12 +44,12 @@ class Booking_Model(models.Model):
         
         bookings_date = Booking_Model.objects.filter(
             room= self.room,
-            end_date__gt= self.start_date,
-            start_date__lt= self.end_date
+            end_date__gte= self.start_date,
+            start_date__lte= self.end_date
         ).exclude(id= self.id)
         
         if bookings_date.exists():
-            raise ValidationError(f"This room is already booked between {self.start_date} and {self.end_date}.")
+            raise ValidationError(f"This room is already booked between {self.start_date} to {self.end_date}.")
         
         if self.guests > self.room.guests:
             raise ValidationError(f"Maximum guests allowed for this room is {self.room.guests}.")

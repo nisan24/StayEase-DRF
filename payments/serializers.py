@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from . models import Payment_Model
 
-
 class Payment_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Payment_Model

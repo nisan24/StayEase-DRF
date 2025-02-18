@@ -105,19 +105,3 @@ class Review_View(APIView):
 
 
 
-    # def put(self, request, review_id, *args, **kwargs):
-    #     review = get_object_or_404(Review_Model, id= review_id, user= request.user)
-    #     serializer = Review_Serializer(review, data= request.data, partial= True)
-
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response({"message": "Review updated successfully!", "data": serializer.data}, status= status.HTTP_200_OK)
-
-    #     return Response({"error": serializer.errors}, status= status.HTTP_400_BAD_REQUEST)
-
-    # def delete(self, request, review_id, *args, **kwargs):
-    #     review = get_object_or_404(Review_Model, id= review_id, user= request.user)
-    #     review.delete()
-    #     return Response({"message": "Review deleted successfully!"}, status= status.HTTP_204_NO_CONTENT)
-
-
