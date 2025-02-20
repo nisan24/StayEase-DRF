@@ -1,9 +1,9 @@
 from pathlib import Path
-import environ
 import os
-
-from dotenv import load_dotenv
-load_dotenv()
+import environ
+import cloudinary
+import cloudinary.uploader
+from cloudinary.utils import cloudinary_url
 
 env = environ.Env()
 environ.Env.read_env()
@@ -35,7 +35,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
-    "corsheaders",
+    'corsheaders',
+    'cloudinary',
     
     'django.contrib.admin',
     'django.contrib.auth',
@@ -92,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'StayEase.wsgi.application'
+WSGI_APPLICATION = 'StayEase.wsgi.app'
 
 
 # Database
@@ -169,3 +170,14 @@ DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 STORE_ID = env("STORE_ID")
 STORE_PASS = env("STORE_PASS")
 IS_SANDBOX = env("IS_SANDBOX")
+
+
+
+CLOUDINARY_URL='cloudinary://861881146933254:ocATWcFnFyD--CbmsPpAXfsOJOE@dfqwj2lfu'
+
+cloudinary.config( 
+  cloud_name = 'dfqwj2lfu',  
+  api_key = '861881146933254',  
+  api_secret = 'ocATWcFnFyD--CbmsPpAXfsOJOE',
+  secure= True
+)

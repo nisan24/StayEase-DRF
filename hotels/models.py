@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -20,7 +21,8 @@ class Hotel_Model(models.Model):
     price_range_min = models.DecimalField(max_digits= 10, decimal_places= 2, null= True)
     price_range_max = models.DecimalField(max_digits= 10, decimal_places= 2, null= True)
     total_rooms = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='hotels/image/')
+    # image = models.ImageField(upload_to='hotels/image/')
+    image = CloudinaryField('hotels/image', null= True)
     create_time = models.DateTimeField(auto_now_add= True)
 
         
@@ -32,7 +34,8 @@ class Hotel_Model(models.Model):
 
 class HotelImage_Model(models.Model):
     hotel = models.ForeignKey(Hotel_Model , on_delete= models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='hotels/extra_images/', validators= [validate_image])
+    # image = models.ImageField(upload_to='hotels/extra_images/', validators= [validate_image])
+    image = CloudinaryField('hotels/extra_images', null= True)
     time = models.DateTimeField(auto_now_add= True)
 
     def __str__(self):
@@ -56,7 +59,8 @@ class Room_Model(models.Model):
     title = models.CharField(max_length= 255, blank= True, null= True, help_text= "Room title")
     subtitle = models.TextField(blank= True, null= True, help_text="Room subtitle")
     available_rooms = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='rooms/image/', blank= True, null= True)
+    # image = models.ImageField(upload_to='rooms/image/', blank= True, null= True)
+    image = CloudinaryField('rooms/image', null= True)
     create_time = models.DateTimeField(auto_now_add= True)
 
     def __str__(self):
@@ -68,15 +72,13 @@ class Room_Model(models.Model):
 
 class RoomImage_Model(models.Model):
     room = models.ForeignKey(Room_Model, on_delete= models.CASCADE, related_name='room_images')
-    image = models.ImageField(upload_to='rooms/extra_images/', validators= [validate_image])
+    # image = models.ImageField(upload_to='rooms/extra_images/', validators= [validate_image])
+    image = CloudinaryField('rooms/extra_images', null= True)
     time = models.DateTimeField(auto_now_add= True)
-
-
 
     def __str__(self):
         return f"Image for {self.room.room_type} -- {self.room.hotel.name}"
 
-    
     
     
 # 'id', 'hotel', 'hotel_name', 'room_type', 'description', 'price_per_night', 'amenities', 'guests', 'bedrooms', 'beds', 'bathrooms', 'available_rooms', 'image', 'create_time'
