@@ -26,10 +26,13 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['.vercel.app']
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://stayease-drf.onrender.com', 'https://*.127.0.0.1',]
+# CSRF_TRUSTED_ORIGINS = ['https://stayease-drf.onrender.com', 'https://*.127.0.0.1',]
+CSRF_TRUSTED_ORIGINS = ['https://*.127.0.0.1', "https://*.vercel.app", 'https://*.supabase.com']
 CORS_ALLOW_ALL_ORIGINS = True
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+
+LOGIN = 'https://stayease.vercel.app/login.html'
 
 # Application definition
 
