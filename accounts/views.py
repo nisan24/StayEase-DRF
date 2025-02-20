@@ -18,6 +18,7 @@ from rest_framework.authentication import TokenAuthentication
 from .models import UserProfile_Model
 from rest_framework import viewsets, status
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -35,7 +36,7 @@ class UserRegistrationAPIView(APIView):
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             confirm_link = f"https://stay-ease-drf.vercel.app/api/accounts/verify/{uid}/{token}/"
             
-            email_subject = "Confirm Your Email"
+            email_subject = "Activate your account"
             email_body = render_to_string('confirm_email.html', {'confirm_link': confirm_link})
             
             email = EmailMultiAlternatives(email_subject, '', to=[user.email])
@@ -57,10 +58,12 @@ def activate(req, uid64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return redirect('user_login')
+        # return redirect('user_login')
+        return HttpResponseRedirect("https://stayease.vercel.app/login.html")
         
     else:
-        return redirect('register')
+        return HttpResponseRedirect("https://stayease.vercel.app/register.html")
+        # return redirect('register')
         # return redirect('register', {'message': 'Invalid or expired token.'})
         
         
