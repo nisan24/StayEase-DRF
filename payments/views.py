@@ -46,9 +46,9 @@ class Payment_View(APIView):
             'total_amount': booking.total_price,
             'currency': "BDT",
             'tran_id': transaction_id,
-            'success_url': "http://127.0.0.1:8000/api/payment/success/",
-            'fail_url': "http://127.0.0.1:8000/api/payment/fail/",
-            'cancel_url': "http://127.0.0.1:8000/api/payment/cancel/",
+            'success_url': "https://stay-ease-drf.vercel.app/api/payment/success/",
+            'fail_url': "https://stay-ease-drf.vercel.app/api/payment/fail/",
+            'cancel_url': "https://stay-ease-drf.vercel.app/api/payment/cancel/",
             'emi_option': 0,
             'cus_name': request.user.username,
             'cus_email': request.user.email,
@@ -106,7 +106,6 @@ class Payment_View(APIView):
 
 # =================================
 
-
 class PaymentSuccess_View(APIView):
     # permission_classes = [IsAuthenticated]
     
@@ -134,7 +133,7 @@ class PaymentSuccess_View(APIView):
             booking.save()
             
             
-            return HttpResponseRedirect("http://127.0.0.1:5500/booking-history.html")
+            return HttpResponseRedirect("https://stayease.vercel.app/booking-history.html")
 
             # return Response(
             #     {
@@ -165,7 +164,7 @@ class PaymentFail_View(APIView):
             payment.payment_status = 'Failed'
             payment.save()
 
-            return HttpResponseRedirect("http://127.0.0.1:5500/index.html")
+            return HttpResponseRedirect("https://stayease.vercel.app/booking-history.html")
 
             # return Response({'message': 'Payment failed!', 'transaction_id': tran_id}, status= status.HTTP_200_OK)
 
@@ -187,7 +186,7 @@ class PaymentCancel_View(APIView):
             payment.payment_status = 'Cancelled'
             payment.save()
 
-            return HttpResponseRedirect("http://127.0.0.1:5500/index.html")
+            return HttpResponseRedirect("https://stayease.vercel.app/booking-history.html")
             # return Response({'message': 'Payment cancelled!', 'transaction_id': tran_id}, status= status.HTTP_200_OK)
 
         except Payment_Model.DoesNotExist:
