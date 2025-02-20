@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "hotels",
     "reviews",
     "payments",  
+    "contacts",
 ]
 
 

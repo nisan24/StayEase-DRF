@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/', include('bookings.urls')),
     path('api/reviews/', include('reviews.urls')),
     path('api/payment/', include('payments.urls')),
+    path('api/contacts/', include('contacts.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
