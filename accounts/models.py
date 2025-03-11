@@ -5,7 +5,7 @@ from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class UserProfile_Model(models.Model):
-    user = models.OneToOneField(User, on_delete= models.CASCADE, related_name="profile")
+    user = models.OneToOneField(User, on_delete= models.CASCADE, related_name="user_profile")
     phone_number = models.CharField(max_length= 15, blank= True, null= True)
     address = models.TextField(blank= True, null= True)
     city = models.CharField(max_length= 50, blank= True, null= True)

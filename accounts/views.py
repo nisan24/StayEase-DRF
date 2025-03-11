@@ -13,7 +13,7 @@ from rest_framework.authtoken.models import Token
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserProfile_Serializer, UserRegistration_Serializers
+from .serializers import UserRegistration_Serializers, UserProfile_Serializer
 from rest_framework.authentication import TokenAuthentication
 from .models import UserProfile_Model
 from rest_framework import viewsets, status
@@ -110,13 +110,15 @@ class UserLogoutApiView(APIView):
 
 
 class UserProfile_ViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    
-    queryset = UserProfile_Model.objects.all() 
     serializer_class = UserProfile_Serializer
-    
-    def get_queryset(self):
-        # print(f"User: {self.request.user}") 
-        return UserProfile_Model.objects.filter(user= self.request.user)
 
+    def get_queryset(self):
+        user_profile = UserProfile_Model.objects.filter(user= self.request.user)
+        
+        if not user_profile.exists():
+            UserProfile_Model.objects.create(user= self.request.user)
+            user_profile = UserProfile_Model.objects.filter(user= self.request.user)
+        
+        return user_profile

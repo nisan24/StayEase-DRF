@@ -116,7 +116,7 @@ class UserRegistration_Serializers(serializers.ModelSerializer):
             phone_number= validated_data.get('phone_number'),
             address= validated_data.get('address'),
             city= validated_data.get('city'),
-            profile_image= validated_data.get('profile_image', 'accounts/default_profile.jpg')
+            profile_image= validated_data.get('profile_image', None)
         )
 
         return user
@@ -128,29 +128,17 @@ class UserLogin_Serializer(serializers.Serializer):
     
     
     
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
-        
-
 class UserProfile_Serializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    join_date = serializers.DateTimeField(read_only= True)
-
+    username = serializers.CharField(source="user.username", read_only=True)
+    first_name = serializers.CharField(source="user.first_name", read_only=True)
+    last_name = serializers.CharField(source="user.last_name", read_only=True)
+    email = serializers.EmailField(source="user.email", read_only=True)
+    
     class Meta:
         model = UserProfile_Model
         fields = [
-            'user', 'phone_number', 'address', 'city', 'profile_image', 'join_date'
+            "username", "first_name", "last_name", "email",
+            "phone_number", "address", "city", "profile_image", "join_date"
         ]
         
-    def get_user(self, obj):
-        return {
-            "id": obj.user.id,
-            "username": obj.user.username,
-            "first_name": obj.user.first_name,
-            "last_name": obj.user.last_name,
-            "email": obj.user.email,
-        }
-        
-        
+    
