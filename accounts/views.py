@@ -122,3 +122,4 @@ class UserProfile_ViewSet(viewsets.ModelViewSet):
             user_profile = UserProfile_Model.objects.filter(user= self.request.user)
         
         return user_profile
+
